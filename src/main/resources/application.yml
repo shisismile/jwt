@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: wechat
+  profiles:
+    active: dev
+  cache:
+    redis:
+      entryTtl: 10000
+application:
+  config:
+    securityPermit: /**
+
+token:
+  # 授权者
+  iss : SMILE
+  #鉴权这
+  aud : ANY
+  # 失效时长 单位:秒
+  expirationSeconds : 240
+  #  token base 64 加密密钥
+  base64Secret: NmUyNGE2NzgxZTcyNDNlM2JiOTc4MzgwZWU1NWM1YjY3YjA3NTEyZTRkZTNhNzc1OGNhYjU3YmYz
