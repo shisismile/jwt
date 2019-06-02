@@ -11,7 +11,7 @@ import lombok.Data;
  * @author smile
  */
 @Data
-@TableName("sys_role_perm")
+@TableName("sys_perm_role")
 public class SysRolePerm {
     @TableId
     private Long id;

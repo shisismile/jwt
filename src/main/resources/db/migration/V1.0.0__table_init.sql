@@ -1,4 +1,5 @@
 -- 系统用户
+DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`
 (
     `id`             bigint      NOT NULL,
@@ -14,6 +15,7 @@ CREATE TABLE `sys_user`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='系统用户';
 -- 角色
+DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role`
 (
     `id`             bigint NOT NULL,
@@ -26,6 +28,7 @@ CREATE TABLE `sys_role`
   DEFAULT CHARSET = utf8 COMMENT ='角色';
 
 -- 用户与角色对应关系
+DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role`
 (
     `id`      bigint NOT NULL,
@@ -36,10 +39,11 @@ CREATE TABLE `sys_user_role`
   DEFAULT CHARSET = utf8 COMMENT ='用户与角色对应关系';
 
 -- 权限
+DROP TABLE IF EXISTS `sys_perm`;
 CREATE TABLE `sys_perm`
 (
     `id`             bigint NOT NULL,
-    `perm_name`      varchar(100) COMMENT '权限名称',
+    `perm`      varchar(64) COMMENT '权限',
     `remark`         varchar(100) COMMENT '备注',
     `create_user_id` bigint(20) COMMENT '创建者ID',
     `create_time`    datetime COMMENT '创建时间',
@@ -48,7 +52,8 @@ CREATE TABLE `sys_perm`
   DEFAULT CHARSET = utf8 COMMENT ='权限';
 
 -- 用户与角色对应关系
-CREATE TABLE `sys_user_role`
+DROP TABLE IF EXISTS `sys_perm_role`;
+CREATE TABLE `sys_perm_role`
 (
     `id`      bigint NOT NULL,
     `perm_id` bigint COMMENT '权限ID',
@@ -58,6 +63,7 @@ CREATE TABLE `sys_user_role`
   DEFAULT CHARSET = utf8 COMMENT ='权限与角色对应关系';
 
 -- 菜单
+DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu`
 (
     `id`        bigint NOT NULL,
@@ -71,6 +77,7 @@ CREATE TABLE `sys_menu`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='菜单管理';
 -- 角色与菜单对应关系
+DROP TABLE IF EXISTS `sys_role_menu`;
 CREATE TABLE `sys_role_menu`
 (
     `id`      bigint NOT NULL AUTO_INCREMENT,
@@ -81,6 +88,7 @@ CREATE TABLE `sys_role_menu`
   DEFAULT CHARSET = utf8 COMMENT ='角色与菜单对应关系';
 
 -- 系统配置信息
+DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE `sys_config`
 (
     `id`          bigint NOT NULL,

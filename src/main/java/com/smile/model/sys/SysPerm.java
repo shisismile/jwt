@@ -23,8 +23,8 @@ public class SysPerm implements Serializable {
     /**
      * 角色名称
      */
-    @NotBlank(message="角色名称不能为空")
-    private String permName;
+    @NotBlank(message="角色不能为空 权限类别:模块:子权限 例如 sys:user:add ")
+    private String perm;
 
     /**
      * 备注
