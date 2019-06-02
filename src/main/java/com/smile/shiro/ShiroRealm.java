@@ -1,6 +1,6 @@
 package com.smile.shiro;
 
-import com.smile.model.SysUser;
+import com.smile.model.sys.SysUser;
 import com.smile.shiro.token.JwtProperties;
 import com.smile.shiro.token.JwtToken;
 import com.smile.shiro.util.JwtUtil;
@@ -16,10 +16,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * TODO

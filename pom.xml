@@ -32,6 +32,7 @@
         <mybatisplus.version>3.1.1</mybatisplus.version>
         <mysql.version>5.1.47</mysql.version>
         <druid.version>1.1.13</druid.version>
+        <mybatis.jsr30.verion>1.0.2</mybatis.jsr30.verion>
     </properties>
 
     <dependencies>
@@ -179,6 +180,23 @@
             <groupId>com.github.axet</groupId>
             <artifactId>kaptcha</artifactId>
             <version>${kaptcha.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-parameter-names</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-typehandlers-jsr310</artifactId>
+            <version>${mybatis.jsr30.verion}</version>
         </dependency>
     </dependencies>
     <repositories>

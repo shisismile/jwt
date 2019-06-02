@@ -34,9 +34,8 @@ token:
 
 #mybatis
 mybatis-plus:
-  mapper-locations: classpath*:/mapper/**/*.xml
   #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.smile.model
+  typeAliasesPackage: com.smile.model.sys
   global-config:
     #数据库相关配置
     db-config:
@@ -46,8 +45,8 @@ mybatis-plus:
       field-strategy: NOT_EMPTY
       #驼峰下划线转换
       column-underline: true
-      logic-delete-value: -1
-      logic-not-delete-value: 0
+#      logic-delete-value: -1
+#      logic-not-delete-value: 0
     banner: false
   #原生配置
   configuration:

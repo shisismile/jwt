@@ -1,6 +1,6 @@
 package com.smile.shiro.filter;
 
-import com.smile.model.SysUser;
+import com.smile.model.sys.SysUser;
 import com.smile.shiro.SecurityConsts;
 import com.smile.shiro.token.JwtToken;
 import com.smile.shiro.util.JwtUtil;
