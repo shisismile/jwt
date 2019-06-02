@@ -4,6 +4,9 @@ spring:
   profiles:
     active: dev
     # jackson时间格式化
+  cache:
+    redis:
+      entryTtl : 120
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
@@ -12,6 +15,9 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
       enabled: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
 application:
   config:
     securityPermit: /**
@@ -48,4 +54,4 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     cache-enabled: false
     call-setters-on-nulls: true
-    jdbc-type-for-null: ' '
+    jdbc-type-for-null: 'null'

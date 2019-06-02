@@ -1,5 +1,6 @@
 package com.smile.shiro.filter;
 
+import com.smile.model.SysUser;
 import com.smile.shiro.SecurityConsts;
 import com.smile.shiro.token.JwtToken;
 import com.smile.shiro.util.JwtUtil;
@@ -55,9 +56,9 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         getSubject(request, response).login(token);
 
         HttpServletRequest req = (HttpServletRequest) request;
-        sysUser.setIp(this.getIpAddress(req));
-        sysUser.setUri(req.getRequestURI());
-        sysUser.setFrom(req.getHeader("From"));
+//        sysUser.setIp(this.getIpAddress(req));
+//        sysUser.setUri(req.getRequestURI());
+//        sysUser.setFrom(req.getHeader("From"));
         UserContext.setSysUser(sysUser);
         // 如果没有抛出异常则代表登入成功，返回true
         return true;
