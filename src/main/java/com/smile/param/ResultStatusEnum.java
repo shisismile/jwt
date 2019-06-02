@@ -3,7 +3,7 @@ package com.smile.param;
 /**
  *
  * @author smile
- * @date 7/12/2017
+ * @date 2019-06-02
  */
 public enum ResultStatusEnum {
     /**

@@ -1,6 +1,7 @@
 package com.smile.shiro.util;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -10,6 +11,7 @@ import com.smile.model.sys.SysUser;
 import com.smile.shiro.SecurityConsts;
 import com.smile.shiro.token.JwtProperties;
 import com.smile.shiro.token.TokenEnums;
+import com.smile.utils.Bean2MapUtils;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,10 +24,9 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
 import java.security.Key;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * TODO
@@ -116,7 +117,7 @@ public class JwtUtil {
         SignatureAlgorithm signatureAlgorithm = getAlgorithm();
         Key signingKey = getKey(base64Security, signatureAlgorithm.getJcaName());
 
-        Map<String, Object> claims = bean2map(user);
+        Map<String, Object> claims = Bean2MapUtils.bean2Map(user);
 
         //添加构成JWT的参数
         JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
@@ -169,7 +170,7 @@ public class JwtUtil {
      * @return 登录用户信息
      */
     public static String createJti() {
-        return String.valueOf(System.nanoTime());
+        return UUID.randomUUID().toString();
     }
 
     public static SysUser verifyAndGetUser(String jwt, String base64Security) {
@@ -213,12 +214,13 @@ public class JwtUtil {
         if(StringUtils.isEmpty(payload)){
             return null;
         }
-        return JSON.parseObject(payload, SysUser.class);
+        return JSONObject.parseObject(payload, SysUser.class);
     }
 
     private static Map<String, Object> bean2map(Object bean) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Map<String, Object> map = new HashMap<>(16);
-        new BeanMap(bean).forEach((k, v) -> map.put(String.valueOf(k), v));
+        new BeanMap(bean).forEach((k, v) -> map.put(String.valueOf(k), v instanceof LocalDateTime ?formatter.format((LocalDateTime)v) :v));
         return map;
     }
 }

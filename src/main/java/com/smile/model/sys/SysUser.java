@@ -13,7 +13,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.management.relation.Role;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -69,7 +68,7 @@ public class SysUser implements Serializable {
 	 * 角色ID列表
 	 */
 	@TableField(exist=false)
-	private List<Role> roleList;
+	private List<SysRole> roleList;
 
 	/**
 	 * 创建者ID
@@ -80,5 +79,29 @@ public class SysUser implements Serializable {
 	 * 创建时间
 	 */
 	private LocalDateTime createTime;
+
+	/**
+	 * 用户ip
+	 */
+	@TableField(exist=false)
+	private String ip;
+
+	/**
+	 * 用户请求uri
+	 */
+	@TableField(exist=false)
+	private String uri;
+
+	/**
+	 * 登录终端
+	 */
+	@TableField(exist=false)
+	private String from;
+
+	/**
+	 * jti 唯一代码
+	 */
+	@TableField(exist=false)
+	private String jti;
 
 }

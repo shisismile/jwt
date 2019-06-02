@@ -1,5 +1,7 @@
 package com.smile.shiro;
 
+import com.smile.model.sys.SysPerm;
+import com.smile.model.sys.SysRole;
 import com.smile.model.sys.SysUser;
 import com.smile.shiro.token.JwtProperties;
 import com.smile.shiro.token.JwtToken;
@@ -16,7 +18,10 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * TODO
@@ -62,7 +67,20 @@ public class ShiroRealm extends AuthorizingRealm {
             throw new UnauthorizedException("授权失败");
         }
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addStringPermissions(null);
+        //获取角色列表
+        List<SysRole> roleList = sysUser.getRoleList();
+        List<String> roles = roleList.stream()
+                .map(SysRole::getRoleName)
+                .collect(Collectors.toList());
+        simpleAuthorizationInfo.addRoles(roles);
+        //获取权限列表
+        List<String> perms = roleList.stream()
+                .map(SysRole::getPermList)
+                .map(sysPerms -> sysPerms.toArray(new SysPerm[0]))
+                .flatMap(Arrays::stream)
+                .map(SysPerm::getPerm)
+                .collect(Collectors.toList());
+        simpleAuthorizationInfo.addStringPermissions(perms);
         return simpleAuthorizationInfo;
     }
 }
