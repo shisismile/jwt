@@ -1,7 +1,5 @@
 package com.smile.utils;
 
-import com.smile.model.sys.SysUser;
-
 import java.util.Optional;
 
 /**

@@ -1,8 +1,5 @@
 package com.smile.shiro;
 
-import com.smile.model.sys.SysPerm;
-import com.smile.model.sys.SysRole;
-import com.smile.model.sys.SysUser;
 import com.smile.shiro.token.JwtProperties;
 import com.smile.shiro.token.JwtToken;
 import com.smile.shiro.util.JwtUtil;

@@ -1,13 +1,11 @@
 package com.smile.shiro.filter;
 
-import com.smile.model.sys.SysUser;
 import com.smile.shiro.SecurityConsts;
 import com.smile.shiro.token.JwtToken;
 import com.smile.shiro.util.JwtUtil;
 import com.smile.utils.UserContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;

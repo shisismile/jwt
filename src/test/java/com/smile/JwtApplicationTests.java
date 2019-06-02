@@ -1,9 +1,5 @@
 package com.smile;
 
-import com.smile.model.sys.SysPerm;
-import com.smile.model.sys.SysRole;
-import com.smile.model.sys.SysUser;
-import com.smile.repository.sys.SysUserRepository;
 import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
