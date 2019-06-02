@@ -11,11 +11,9 @@ import com.smile.model.sys.SysUser;
 import com.smile.shiro.SecurityConsts;
 import com.smile.shiro.token.JwtProperties;
 import com.smile.shiro.token.TokenEnums;
-import com.smile.utils.Bean2MapUtils;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -24,9 +22,10 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
 import java.security.Key;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * TODO
@@ -117,7 +116,7 @@ public class JwtUtil {
         SignatureAlgorithm signatureAlgorithm = getAlgorithm();
         Key signingKey = getKey(base64Security, signatureAlgorithm.getJcaName());
 
-        Map<String, Object> claims = Bean2MapUtils.bean2Map(user);
+        Map<String, Object> claims = bean2map(user);
 
         //添加构成JWT的参数
         JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
@@ -217,10 +216,13 @@ public class JwtUtil {
         return JSONObject.parseObject(payload, SysUser.class);
     }
 
+    /**
+     * 由于Bean嵌套的原因,所以才用Json转换嵌套bean,性能有影响
+     * @param bean
+     * @return
+     */
     private static Map<String, Object> bean2map(Object bean) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        Map<String, Object> map = new HashMap<>(16);
-        new BeanMap(bean).forEach((k, v) -> map.put(String.valueOf(k), v instanceof LocalDateTime ?formatter.format((LocalDateTime)v) :v));
-        return map;
+        String json = JSONObject.toJSONString(bean);
+        return JSONObject.parseObject(json,Map.class);
     }
 }
