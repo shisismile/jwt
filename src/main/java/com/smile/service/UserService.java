@@ -1,5 +1,6 @@
 package com.smile.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.smile.model.sys.SysUser;
 import com.smile.param.LoginUserParam;
@@ -9,6 +10,7 @@ import com.smile.repository.sys.SysUserMapper;
 import com.smile.shiro.SecurityConsts;
 import com.smile.shiro.token.JwtProperties;
 import com.smile.shiro.token.JwtToken;
+import com.smile.shiro.token.RefreshToken;
 import com.smile.shiro.util.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
@@ -80,5 +82,28 @@ public class UserService extends ServiceImpl<SysUserMapper, SysUser> {
             return Result.<JwtToken>build().error(INTER_ERROR);
         }
 
+    }
+
+    /**
+     * 刷新token
+     * @param refreshToken
+     * @return
+     */
+    public Result<JwtToken> refreshToken(RefreshToken refreshToken) {
+        if(JwtUtil.verify(refreshToken.getRefreshToken(),jwtProperties.getBase64Secret())){
+            return Result.<JwtToken>build().error(INVALID_TOKEN);
+        }
+        final SysUser sysUser = JSONObject.parseObject(refreshToken.getAccessToken().split("[.]")[1], SysUser.class);
+        setOperations.remove(SecurityConsts.LOGIN_SALT + sysUser.getUsername(),sysUser.getJti());
+        String jti = JwtUtil.createJti();
+        sysUser.setJti(jti);
+        // 4.生成token
+        String accessToken = JwtUtil.createAccessToken(sysUser, jwtProperties.getIss(), jwtProperties.getAud(),
+                jwtProperties.getExpirationSeconds() * 1000, jwtProperties.getBase64Secret());
+        setOperations.add(SecurityConsts.LOGIN_SALT + sysUser.getUsername(),jti);
+        JwtToken token = new JwtToken(accessToken, refreshToken.getRefreshToken(), "Bearer", jwtProperties.getExpirationSeconds());
+        return Result.<JwtToken>build()
+                .ok()
+                .withData(token);
     }
 }

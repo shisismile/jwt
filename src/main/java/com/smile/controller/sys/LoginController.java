@@ -6,10 +6,12 @@ import com.smile.param.Result;
 import com.smile.service.CaptchaService;
 import com.smile.service.UserService;
 import com.smile.shiro.token.JwtToken;
+import com.smile.shiro.token.RefreshToken;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +40,13 @@ public class LoginController {
     @GetMapping("token")
     public Result<JwtToken> token(LoginUserParam loginUserParam){
         return userService.getToken(loginUserParam);
+    }
+
+
+    @ApiOperation("刷新token")
+    @GetMapping("refresh")
+    public Result<JwtToken> refresh(@Validated RefreshToken refreshToken){
+        return userService.refreshToken(refreshToken);
     }
 
 }
