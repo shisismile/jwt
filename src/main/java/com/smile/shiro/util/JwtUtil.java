@@ -2,25 +2,15 @@ package com.smile.shiro.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.smile.model.sys.SysUser;
-import com.smile.shiro.SecurityConsts;
-import com.smile.shiro.token.JwtProperties;
 import com.smile.shiro.token.TokenEnums;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
-import java.io.UnsupportedEncodingException;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
@@ -33,72 +23,8 @@ import java.util.UUID;
  * @author shimingen
  * @date 2019/5/30 17:31
  */
-@Component
+
 public class JwtUtil {
-
-   private JwtProperties jwtProperties;
-
-    public JwtUtil(JwtProperties jwtProperties) {
-        this.jwtProperties = jwtProperties;
-    }
-
-    private static JwtUtil jwtUtil;
-
-    @PostConstruct
-    public void init() {
-        jwtUtil = this;
-        jwtUtil.jwtProperties = this.jwtProperties;
-    }
-
-    /**
-     * 校验token是否正确
-     * @param token
-     * @return
-     */
-    public static boolean verify(String token) throws UnsupportedEncodingException {
-        String secret = getClaim(token, SecurityConsts.ACCOUNT) + jwtUtil.jwtProperties.getBase64Secret();
-        Algorithm algorithm = Algorithm.HMAC256(secret);
-        JWTVerifier verifier = JWT.require(algorithm)
-                .build();
-        verifier.verify(token);
-        return true;
-    }
-
-    /**
-     * 获得Token中的信息无需secret解密也能获得
-     * @param token
-     * @param claim
-     * @return
-     */
-    public static String getClaim(String token, String claim) {
-        try {
-            DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim(claim).asString();
-        } catch (JWTDecodeException e) {
-            return null;
-        }
-    }
-
-    /**
-     * 生成签名,5min后过期
-     * @param account
-     * @param currentTimeMillis
-     * @return
-     */
-    public static String sign(String account, String currentTimeMillis) throws UnsupportedEncodingException {
-        // 帐号加JWT私钥加密
-        String secret = account + jwtUtil.jwtProperties.getBase64Secret();
-        // 此处过期时间，单位：毫秒
-        Date date = new Date(System.currentTimeMillis() + jwtUtil.jwtProperties.getExpirationSeconds()*60*1000L);
-        Algorithm algorithm = Algorithm.HMAC256(secret);
-
-        return JWT.create()
-                .withClaim(SecurityConsts.ACCOUNT, account)
-                .withClaim(SecurityConsts.CURRENT_TIME_MILLIS, currentTimeMillis)
-                .withExpiresAt(date)
-                .sign(algorithm);
-    }
-
 
     public static boolean verify(String jsonWebToken, String base64Security) {
         return Jwts.parser()
@@ -131,7 +57,6 @@ public class JwtUtil {
             Date exp = new Date(expMillis);
             builder.setExpiration(exp).setNotBefore(now);
         }
-
         //生成JWT
         return builder.compact();
     }
@@ -209,11 +134,13 @@ public class JwtUtil {
             return null;
         }
 
-        String payload = new String(Base64.getUrlDecoder().decode(jwt[1]));
-        if(StringUtils.isEmpty(payload)){
+        String playload = new String(Base64.getUrlDecoder().decode(jwt[1]));
+//        final Claims body = Jwts.parser().setSigningKey(base64Security).parseClaimsJws(authorization).getBody();
+//        final String playload = JSONObject.toJSONString(body);
+        if(StringUtils.isEmpty(playload)){
             return null;
         }
-        return JSONObject.parseObject(payload, SysUser.class);
+        return JSONObject.parseObject(playload, SysUser.class);
     }
 
     /**
